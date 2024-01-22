@@ -1,2 +1,2 @@
 # cryptoWeb
-# Platform crypto monnaie réalisé en nodejs et reactjs
+# Platform crypto réalisée en nodejs et reactjs
