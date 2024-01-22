@@ -1,0 +1,41 @@
+.input-search {
+    caret-color: #74b6e6;
+    margin: auto;
+    border-radius: 0rem;
+    border-top-left-radius: .2rem;
+    border-bottom-left-radius: .2rem;
+    height: .9rem;
+}
+
+.btn-search{
+    border-radius: 0rem;  
+    border-top-right-radius: .2rem;
+    border-bottom-right-radius: .2rem;  
+}
+    
+.search-inner {
+        align-items: center;
+    width: 50%;
+}
+
+
+.dropdown {
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    border: 0.1rem solid black;
+    position: absolute;
+    right: 35%;
+}
+
+.dropdown:empty {
+    border: none;
+}
+  
+.dropdown-row {
+    text-align: start;
+    margin: 0.1rem 0;
+    color: black;
+}
+  
+  

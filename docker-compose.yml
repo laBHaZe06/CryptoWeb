@@ -1,0 +1,64 @@
+version: '3.8'
+services:
+  db:
+    image: mysql:8.0
+    container_name: db
+    env_file:
+      - EnvFiles/.envDb
+    ports:
+      - '3306:3306'
+    volumes:
+      - db:/var/lib/mysql
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    restart: unless-stopped
+
+  api:
+    image: api
+    container_name: api
+    build: crypto-api
+    depends_on:
+      - db
+    env_file:
+      - EnvFiles/.envApi
+    ports:
+      - 5000:5000
+    restart: unless-stopped
+
+  ###
+  front:
+    build: ./client
+    container_name: frontend
+    env_file:
+      - EnvFiles/.envFront
+    ports:
+      - 3000:3000
+    restart: unless-stopped
+
+  letsencrypt:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    container_name: letsencrypt
+    restart: always
+    volumes_from:
+      - nginx
+    volumes:
+      - ./letsencrypt/certs:/etc/nginx/certs:rw
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      - REUSE_PRIVATE_KEYS=true
+
+  nginx:
+    image: nginx
+    container_name: nginx
+    restart: always
+    ports:
+      - "443:443"
+      - "80:80"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ./nginx/html:/usr/share/nginx/html
+      - ./nginx/vhost.d:/etc/nginx/vhost.d
+      - ./letsencrypt/certs:/etc/nginx/certs:ro
+
+volumes:
+  db:
+    driver: local
